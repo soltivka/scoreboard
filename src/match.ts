@@ -4,12 +4,12 @@ export interface IScore {
 }
 
 export class Match {
-    id: string
+    id: string;
     homeTeam: string;
     awayTeam: string;
     score: IScore;
     updated: number;
-    started: number
+    started: number;
 
     constructor(homeTeam: string, awayTeam: string) {
         this.homeTeam = homeTeam;

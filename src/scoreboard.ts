@@ -17,7 +17,7 @@ export class ScoreBoard {
     }
 
     /** deletes specified Match from this scoreboard.*/
-    finishMatch(id) {
+    finishMatch(id:string):ScoreBoard {
         this.scores = this.scores.filter(el => el.id !== id)
         return this
     }
@@ -41,9 +41,7 @@ export class ScoreBoard {
                 return 1
             }
         })
-        return sorted.map(el => {
-            return {...el.score, homeTeam: el.homeTeam, awayTeam: el.awayTeam, time: el.started}
-        })
+        return sorted
     }
 }
 
