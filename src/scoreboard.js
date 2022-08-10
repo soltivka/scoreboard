@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
         if (ar || !(i in from)) {
@@ -20,19 +9,27 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ScoreBoard = void 0;
 var match_1 = require("./match");
 var ScoreBoard = /** @class */ (function () {
     function ScoreBoard() {
         this.scores = [];
     }
+    /** Adds a new game to the scoreboard. It takes two parameters: (home team name, guest team name).
+     *  Returns an instance of the Match with a score of 0-0 */
     ScoreBoard.prototype.newMatch = function (homeTeam, awayTeam) {
         var match = new match_1.Match(homeTeam, awayTeam);
         this.scores.push(match);
         return match;
     };
-    ScoreBoard.prototype.getMatch = function (id) {
-        return this.scores.find(function (el) { return el.id === id; });
+    /** deletes specified Match from this scoreboard.*/
+    ScoreBoard.prototype.finishMatch = function (id) {
+        this.scores = this.scores.filter(function (el) { return el.id !== id; });
+        return this;
     };
+    /** Get a summary of games in progress ordered by their total score. The games with the
+     same total score will be returned ordered by the most recently started match in the
+     scoreboard.*/
     ScoreBoard.prototype.getScore = function () {
         var scores = __spreadArray([], this.scores, true);
         var sorted = scores.sort(function (a, b) {
@@ -49,18 +46,8 @@ var ScoreBoard = /** @class */ (function () {
                 return 1;
             }
         });
-        return sorted.map(function (el) { return __assign(__assign({}, el.score), { homeTeam: el.homeTeam, awayTeam: el.awayTeam, time: el.started }); });
+        return sorted;
     };
     return ScoreBoard;
 }());
-var SB = new ScoreBoard();
-var first = SB.newMatch('ukrop', 'rusnya');
-var second = setTimeout(function () {
-    SB.newMatch('newYork', 'London').update({ home: 15, away: 0 });
-}, 1000);
-var third = SB.newMatch('georgia', 'rusnya');
-first.update({ home: 15, away: 0 });
-third.update({ home: 15, away: 0 });
-setTimeout(function () {
-    console.log(SB.getScore());
-}, 1500);
+exports.ScoreBoard = ScoreBoard;

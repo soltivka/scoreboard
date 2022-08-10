@@ -26,6 +26,9 @@ export class Match {
     /** Update score. This should receive IScore object of absolute scores: home team score and
      away team score. */
     update(score: IScore) {
+        if(typeof score.home!=='number' || typeof score.away !=='number' ){
+            throw new Error('score can contain numbers only')
+        }
         this.score = score
         this.updated = new Date().getTime()
         return this
